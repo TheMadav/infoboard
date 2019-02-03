@@ -40,6 +40,7 @@ import Unsplash, { toJson } from 'unsplash-js'
 export default {
 	data: function() {
 		return {
+			settings: {},
 			imageInterval: process.env.IMAGE_INTERVAL,
 			nasa: false,
 			background: '',
@@ -57,6 +58,10 @@ export default {
 		}
 	},
 	mounted() {
+		this.loadSettings()
+		console.log(this.settings)
+		console.log(this.settings.IMAGES_SOURCE)
+
 		this.fullscreenEnabled = document.fullscreenEnabled || document.mozFullScreenEnabled || document.webkitFullscreenEnabled
 		this.imagesSource = process.env.IMAGES_SOURCE === undefined || process.env.IMAGES_SOURCE === '' ? 'local' : process.env.IMAGES_SOURCE
 		this.showNavButtons = process.env.NAV_BUTTONS === 'true' ? true : false
@@ -88,6 +93,17 @@ export default {
 		clearInterval(this.interval)
 	},
 	methods: {
+		loadSettings: async function () {
+			let settings
+			try {
+				settings = localStorage.getItem('infoboardSettings')
+				if (settings !== null) {
+					this.settings = JSON.parse(settings)
+				}
+			} catch (err) {
+				if (this.env == 'development') console.log(e)
+			}
+		},
 		saveState () {
 			let savedImageList
 

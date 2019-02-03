@@ -11,6 +11,11 @@
 			<Tfl />
 			<Calendar />
 		</div>
+		<n-link
+			class="btn btn-sm btn-outline-dark btn-settings"
+			to="/settings">
+			Settings
+		</n-link>
 	</div>
 </template>
 
@@ -30,6 +35,31 @@ export default {
 		Forecast,
 		Calendar,
 		Tfl
+	},
+	mounted() {
+		// this.loadSettings()
+		let settings
+		try {
+			settings = localStorage.getItem('infoboardSettings')
+			if (settings === null) {
+				this.$router.replace({ path: 'settings' })
+			}
+		} catch (err) {
+			if (this.env == 'development') console.log(e)
+		}
+	},
+	methods: {
+		loadSettings: async function () {
+			let settings
+			try {
+				settings = localStorage.getItem('infoboardSettings')
+				if (settings === null) {
+					this.$router.replace({ path: 'settings' })
+				}
+			} catch (err) {
+				if (this.env == 'development') console.log(e)
+			}
+		}
 	}
 }
 </script>
@@ -54,6 +84,12 @@ html, body {
 	width: fit-content;
 }
 
+.btn-settings {
+	position: fixed;
+	bottom: 0.5rem;
+	left: 0.5rem;
+	z-index: 10;
+}
 @media (max-width: 575.98px) {
 	html, body {
 		font-size: 0.9rem;

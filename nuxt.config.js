@@ -1,6 +1,10 @@
 const pkg = require('./package')
+const envconfig = require('dotenv').config()
 
 module.exports = {
+	env: {
+		envsettings: envconfig.parsed
+	},
 	mode: 'universal',
 
 	/*
