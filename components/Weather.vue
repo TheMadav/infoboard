@@ -77,7 +77,7 @@ export default {
 					this.updated = moment.unix(response.data.currently.time).format('HH:mm:ss')
 				})
 				.catch(e => {
-					if (this.env == 'development') console.log(e)
+					if (process.env.NODE_ENV == 'development') console.log(e)
 				})
 		},
 		roundValue(val) {

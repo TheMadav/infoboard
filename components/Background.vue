@@ -59,8 +59,6 @@ export default {
 	},
 	mounted() {
 		this.loadSettings()
-		console.log(this.settings)
-		console.log(this.settings.IMAGES_SOURCE)
 
 		this.fullscreenEnabled = document.fullscreenEnabled || document.mozFullScreenEnabled || document.webkitFullscreenEnabled
 		this.imagesSource = process.env.IMAGES_SOURCE === undefined || process.env.IMAGES_SOURCE === '' ? 'local' : process.env.IMAGES_SOURCE
@@ -101,7 +99,7 @@ export default {
 					this.settings = JSON.parse(settings)
 				}
 			} catch (err) {
-				if (this.env == 'development') console.log(e)
+				if (process.env.NODE_ENV == 'development') console.log(e)
 			}
 		},
 		saveState () {
@@ -112,7 +110,7 @@ export default {
 				localStorage.removeItem('infoboardBgrState')
 				localStorage.setItem('infoboardBgrState', savedImageList)
 			} catch (err) {
-				if (this.env == 'development') console.log(e)
+				if (process.env.NODE_ENV == 'development') console.log(e)
 			}
 		},
 		loadState () {
@@ -130,7 +128,7 @@ export default {
 					}
 				}
 			} catch (err) {
-				if (this.env == 'development') console.log(e)
+				if (process.env.NODE_ENV == 'development') console.log(e)
 			}
 		},
 		fullscreen: function () {
@@ -202,7 +200,7 @@ export default {
 						this.pickImage()
 					})
 					.catch(e => {
-						if (this.env == 'development') console.log(e)
+						if (process.env.NODE_ENV == 'development') console.log(e)
 					})
 			} else {
 				this.pickImage()
@@ -215,7 +213,7 @@ export default {
 						this.imageList = response.data
 					})
 					.catch(e => {
-						if (this.env == 'development') console.log(e)
+						if (process.env.NODE_ENV == 'development') console.log(e)
 					})
 			}
 
@@ -232,7 +230,7 @@ export default {
 					this.background = `background-image: url("${response.data.hdurl}")`
 				})
 				.catch(e => {
-					if (this.env == 'development') console.log(e)
+					if (process.env.NODE_ENV == 'development') console.log(e)
 				})
 		},
 		getUnsplash: function() {
@@ -261,7 +259,7 @@ export default {
 						this.background = `background-image: url("${this.lastImage}")`
 					})
 					.catch((e) => {
-						if (this.env == 'development') console.log(e)
+						if (process.env.NODE_ENV == 'development') console.log(e)
 					})
 					.then(() => {
 					// save current images array state

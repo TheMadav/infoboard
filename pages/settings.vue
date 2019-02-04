@@ -1,32 +1,30 @@
 <template>
-	<div class="container-fluid pt-2 settings">
-		<div class="row mx-2 py-2">
+	<div class="container pt-2 settings">
+		<h3>Settings</h3>
+		<!-- https://vuejs.org/v2/guide/forms.html -->
+		<div
+			v-for="(esValue, esKey) in envSettings"
+			:key="esKey"
+			class="row">
 			<div class="col">
-				<h1>name</h1>
-				<p
-					v-for="(esValue, esKey) in envSettings"
-					:key="esKey">
+				<p>
 					{{ esKey }}
 				</p>
 			</div>
 			
 			<div class="col">
-				<h1>local setting</h1>
-				https://vuejs.org/v2/guide/forms.html
-				<p
-					v-for="(lsValue, lsKey) in localSettings"
-					:key="lsKey">
-					{{ lsValue }}
-				</p>
-			</div>
-
-			<div class="col">
-				<h1>.env file setting</h1>
-				<p
-					v-for="(esValue, esKey) in envSettings"
-					:key="esKey">
-					{{ esValue }}
-				</p>
+				<label :for="esKey">
+					{{ esKey }}
+				</label>
+				<input
+					:id="esKey"
+					v-model.lazy="localSettings[esKey]"
+					type="text"
+					class="form-control">
+				<small
+					class="form-text text-muted">
+					Default: {{ esValue }}
+				</small>
 			</div>
 
 			<n-link
@@ -46,24 +44,17 @@ export default {
 			localSettings: {}
 		}
 	},
-	mounted() {
-		this.loadSettings()
-	},
-	methods: {
-		loadSettings () {
-			let localSettings
-			try {
-				this.envSettings = process.env.envsettings
-				localSettings = localStorage.getItem('infoboardSettings')
-				if (typeof localSettings !== 'object' || localSettings === null) {
-					localSettings = this.envSettings
-					localStorage.setItem('infoboardSettings', JSON.stringify(localSettings))
-				}
-				this.localSettings = localSettings
-			} catch (err) {
-				if (this.env == 'development') console.log(e)
-			}
+	watch: {
+		'localSettings': {
+			handler:function (val, oldVal) {
+				localStorage.setItem('infoboardSettings', JSON.stringify(this.localSettings))
+			},
+			deep: true
 		}
+	},
+	mounted() {
+		this.envSettings = process.env.envsettings
+		this.localSettings = JSON.parse(localStorage.getItem('infoboardSettings'))
 	}
 }
 </script>
@@ -71,9 +62,13 @@ export default {
 <style scoped>
 .settings {
 	background-color: #292929;
-	color: #fff;
+	color: #ffcc00;
 	font-family: 'Cousine', monospace;
 	font-size: 0.7em;
+	-webkit-user-select: auto; /* Safari */
+	-moz-user-select: auto; /* Firefox */
+	-ms-user-select: auto; /* IE10+/Edge */
+	user-select: auto; /* Standard */
 }
 
 .btn-settings {

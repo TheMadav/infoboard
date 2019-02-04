@@ -36,29 +36,20 @@ export default {
 		Calendar,
 		Tfl
 	},
-	mounted() {
-		// this.loadSettings()
+	created() {
 		let settings
 		try {
 			settings = localStorage.getItem('infoboardSettings')
 			if (settings === null) {
+				settings = JSON.stringify(process.env.envsettings)
+				localStorage.removeItem('infoboardSettings')
+				localStorage.setItem('infoboardSettings', settings)
 				this.$router.replace({ path: 'settings' })
+			} else {
+				this.$store.commit('updateSettings', JSON.parse(settings))
 			}
 		} catch (err) {
-			if (this.env == 'development') console.log(e)
-		}
-	},
-	methods: {
-		loadSettings: async function () {
-			let settings
-			try {
-				settings = localStorage.getItem('infoboardSettings')
-				if (settings === null) {
-					this.$router.replace({ path: 'settings' })
-				}
-			} catch (err) {
-				if (this.env == 'development') console.log(e)
-			}
+			if (process.env.NODE_ENV == 'development') console.log(err)
 		}
 	}
 }

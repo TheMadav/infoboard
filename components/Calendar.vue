@@ -97,7 +97,7 @@ export default {
 					this.eventsList = eventsList
 				})
 				.catch(e => {
-					if (this.env == 'development') console.log(e)
+					if (process.env.NODE_ENV == 'development') console.log(e)
 				})
 		},
 		toggleCalendar() {

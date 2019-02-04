@@ -10,5 +10,8 @@ export const mutations = {
 	},
 	loadForecast (state, payload) {
 		state.forecast = payload
+	},
+	updateSettings (state, payload) {
+		state.infoboardSettings = payload
 	}
 }

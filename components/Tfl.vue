@@ -154,7 +154,7 @@ export default {
 				//   this.buses = data
 				// }
 				}).catch(e => {
-					if (this.env == 'development') console.log(e)
+					if (process.env.NODE_ENV == 'development') console.log(e)
 				})
 		},
 		async getTube () {
@@ -179,7 +179,7 @@ export default {
 						this.errors.push(`TfL API error: ${res.message}`)
 					}
 				}).catch(e => {
-					if (this.env == 'development') console.log(e)
+					if (process.env.NODE_ENV == 'development') console.log(e)
 				})
 		}
 	}
