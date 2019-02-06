@@ -1,10 +1,7 @@
 <template>
 	<div class="col">
-		<div>
-			<p class="row time display-1 px-2 withBackground">{{ time }}</p>
-		</div>
-		<div class="row mt-2">
-			<p class="h4 px-2 py-1 withBackground">{{ date }}</p>
+		<div class='withBackground'>
+			<p class="h3 time p-2">{{ time }} <small>({{ date }})</small></p>
 		</div>
 	</div>
 </template>
@@ -36,9 +33,5 @@ export default {
 </script>
 
 <style scoped>
-@media (max-width: 575.98px) {
-	.time {
-		font-size: 4rem;
-	}
-}
+
 </style>
