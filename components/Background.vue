@@ -2,26 +2,32 @@
 	<section class="container">
 		<div
 			id="backgroundImageBlur" 
-			:style="background"/>
+			:style="background" />
 		<div 
 			id="backgroundImage" 
-			:style="background"/>
+			:style="background" />
 
 		<div class="btn-group buttons">
 			<button
 				v-if="fullscreenEnabled === true"
 				class="btn btn-sm btn-outline-dark"
-				@click="fullscreen">fullscreen</button>
+				@click="fullscreen">
+				fullscreen
+			</button>
 			<button
 				v-if="showNavButtons === true"
 				:disabled="disableButtons"
 				class="btn btn-sm btn-outline-dark"
-				@click="getNext('image')">{{ nextimage }}</button>
+				@click="getNext('image')">
+				{{ nextimage }}
+			</button>
 			<button 
 				v-if="enableFolderButton === true && showNavButtons === true"
 				:disabled="disableButtons"
 				class="btn btn-sm btn-outline-dark"
-				@click="getNext('folder')">{{ nextfolder }}</button>
+				@click="getNext('folder')">
+				{{ nextfolder }}
+			</button>
 		</div>
 	</section>
 </template>
@@ -34,6 +40,7 @@ import Unsplash, { toJson } from 'unsplash-js'
 export default {
 	data: function() {
 		return {
+			settings: {},
 			imageInterval: process.env.IMAGE_INTERVAL,
 			nasa: false,
 			background: '',
@@ -51,6 +58,8 @@ export default {
 		}
 	},
 	mounted() {
+		this.loadSettings()
+
 		this.fullscreenEnabled = document.fullscreenEnabled || document.mozFullScreenEnabled || document.webkitFullscreenEnabled
 		this.imagesSource = process.env.IMAGES_SOURCE === undefined || process.env.IMAGES_SOURCE === '' ? 'local' : process.env.IMAGES_SOURCE
 		this.showNavButtons = process.env.NAV_BUTTONS === 'true' ? true : false
@@ -82,6 +91,17 @@ export default {
 		clearInterval(this.interval)
 	},
 	methods: {
+		loadSettings: async function () {
+			let settings
+			try {
+				settings = localStorage.getItem('infoboardSettings')
+				if (settings !== null) {
+					this.settings = JSON.parse(settings)
+				}
+			} catch (err) {
+				if (process.env.NODE_ENV == 'development') console.log(e)
+			}
+		},
 		saveState () {
 			let savedImageList
 
@@ -90,7 +110,7 @@ export default {
 				localStorage.removeItem('infoboardBgrState')
 				localStorage.setItem('infoboardBgrState', savedImageList)
 			} catch (err) {
-				if (this.env == 'development') console.log(e)
+				if (process.env.NODE_ENV == 'development') console.log(e)
 			}
 		},
 		loadState () {
@@ -108,7 +128,7 @@ export default {
 					}
 				}
 			} catch (err) {
-				if (this.env == 'development') console.log(e)
+				if (process.env.NODE_ENV == 'development') console.log(e)
 			}
 		},
 		fullscreen: function () {
@@ -149,7 +169,18 @@ export default {
 				this.getBackground(param)
 			}
 		},
-		getBackground: function (param) {
+		pickImage: async function () {
+			// remove current image from array and display it
+			this.lastImage = this.imageList.shift()
+			this.imageSrc = encodeURIComponent(this.lastImage)
+			this.background = `background-image: url("/api/background/${this.imageSrc}")`
+			this.getMeta()
+			// get buttons back to normal
+			this.nextimage = 'image'
+			this.nextfolder = 'folder'
+			this.disableButtons = false
+		},
+		getBackground: async function (param) {
 			if (param == 'image') {
 				this.disableButtons = true
 				clearInterval(this.interval)
@@ -162,49 +193,45 @@ export default {
 			this.nextfolder = '...'
 
 			if (this.imageList.length == 0) {
-				// get a batch of images
-				axios.get(`/api/backgrounds/${this.lastImage}`)
-				.then(response => {
-					this.imageList = response.data
-					this.lastImage = this.imageList.shift()
-					this.imageSrc = encodeURIComponent(this.lastImage)
-					this.background = `background-image: url("/api/background/${this.imageSrc}")`
-					this.getMeta()
-					// get buttons back to normal
-					this.nextimage = 'image'
-					this.nextfolder = 'folder'
-					this.disableButtons = false
-				})
-				.catch(e => {
-					if (this.env == 'development') console.log(e)
-				})
+				// get new batch of images
+				await axios.get(`/api/backgrounds/${this.lastImage}`)
+					.then(response => {
+						this.imageList = response.data
+						this.pickImage()
+					})
+					.catch(e => {
+						if (process.env.NODE_ENV == 'development') console.log(e)
+					})
 			} else {
-				// remove current image from array and display it
-				this.lastImage = this.imageList.shift()
-				this.imageSrc = encodeURIComponent(this.lastImage)
-				this.background = `background-image: url("/api/background/${this.imageSrc}")`
-				this.getMeta()
-				// get buttons back to normal
-				this.nextimage = 'image'
-				this.nextfolder = 'folder'
-				this.disableButtons = false
+				this.pickImage()
+			}
+
+			if (this.imageList.length == 0) {
+				// get new batch of images
+				await axios.get(`/api/backgrounds/${this.lastImage}`)
+					.then(response => {
+						this.imageList = response.data
+					})
+					.catch(e => {
+						if (process.env.NODE_ENV == 'development') console.log(e)
+					})
 			}
 
 			// save current images array state
 			this.saveState()
 
 			if (param == 'image' || param == 'folder') {
-				this.interval = setInterval(this.getBackground, 60000)
+				this.interval = setInterval(this.getBackground, this.imageInterval * 1000)
 			}
 		},
 		getNasaAPOD: function() {
 			axios.get('/api/nasa')
-			.then(response => {
-				this.background = `background-image: url("${response.data.hdurl}")`
-			})
-			.catch(e => {
-				if (this.env == 'development') console.log(e)
-			})
+				.then(response => {
+					this.background = `background-image: url("${response.data.hdurl}")`
+				})
+				.catch(e => {
+					if (process.env.NODE_ENV == 'development') console.log(e)
+				})
 		},
 		getUnsplash: function() {
 			const unsplash = new Unsplash({
@@ -224,20 +251,20 @@ export default {
 				axios.get(`https://api.pexels.com/v1/curated?per_page=${this.perPage}&page=${this.page}`, {
 					headers: { Authorization: process.env.PEXELS_KEY }
 				})
-				.then((response) => {
-					for (var i = 0; i < response.data.photos.length; i++) {
-						this.imageList.push(response.data.photos[i].src.medium)
-					}
-					this.lastImage = this.imageList.shift()
-					this.background = `background-image: url("${this.lastImage}")`
-				})
-				.catch((e) => {
-					if (this.env == 'development') console.log(e)
-				})
-				.then(() => {
+					.then((response) => {
+						for (var i = 0; i < response.data.photos.length; i++) {
+							this.imageList.push(response.data.photos[i].src.medium)
+						}
+						this.lastImage = this.imageList.shift()
+						this.background = `background-image: url("${this.lastImage}")`
+					})
+					.catch((e) => {
+						if (process.env.NODE_ENV == 'development') console.log(e)
+					})
+					.then(() => {
 					// save current images array state
-					this.saveState()
-				})
+						this.saveState()
+					})
 			} else {
 				// remove current image from array and display it
 				this.lastImage = this.imageList.shift()
@@ -254,24 +281,24 @@ export default {
 					var orientation = EXIF.getTag(this, "Orientation")
 
 					switch(orientation) {
-						case 1:
-						case 2:
-							degr = 0
-							break
-						case 3:
-						case 4:
-							degr = 180
-							break
-						case 5:
-						case 6:
-							degr = 90
-							break
-						case 7:
-						case 8:
-							degr = 270
-							break
-						default:
-							degr = 0
+					case 1:
+					case 2:
+						degr = 0
+						break
+					case 3:
+					case 4:
+						degr = 180
+						break
+					case 5:
+					case 6:
+						degr = 90
+						break
+					case 7:
+					case 8:
+						degr = 270
+						break
+					default:
+						degr = 0
 					}
 					imageElement.style.transform = `rotate(${degr}deg)`
 					// rotating blurred bgr makes it the same size, and "CSS: cover" doesn't seem to work as expected

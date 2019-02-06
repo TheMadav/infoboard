@@ -102,10 +102,16 @@ $ npm install
 
 # build production bundle
 $ npm run build
+# Note, if you get build errors,
+# delete `node_modules` directory and run `npm install` again
+# if above doesn't help delete the whole app and run
+# pm2 stop infoboard
+# pm2 delete infoboard
+# and follow `production deployment steps` above
 
 # restart persistent app manager
 # note: no neet to run `npm run build`, pm2 will do it for you
-$ pm2 restart infoboard
+$ pm2 restart infoboard --update-env
 
 # the app takes a minute to compile, to see the progress
 # run below command and watch "Global Logs" window
@@ -122,8 +128,8 @@ $ git clone https://github.com/SixBytesUnder/infoboard.git .
 # install dependencies
 $ npm install
 
-# serve with hot reload (including ExpressJS hot reload) on localhost:3000
-$ nodemon --watch api --exec "npm run dev"
+# serve with hot reload at localhost:3000
+$ npm run dev
 ```
 
 For full documentation on NuxtJS go to [Nuxt.js docs](https://github.com/nuxt/nuxt.js).
@@ -143,7 +149,10 @@ $ pm2 save
 pm2 status
 
 # check if your pm2 process is running
-pm2 list
+$ pm2 list
+
+# monitor your apps running on pm2
+$ pm2 monit
 ```
 
 nginx setup on RPi: https://nuxtjs.org/faq/nginx-proxy/  

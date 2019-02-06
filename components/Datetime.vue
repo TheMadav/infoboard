@@ -1,7 +1,14 @@
 <template>
 	<div class="col">
-		<div class='withBackground'>
-			<p class="h3 time p-2">{{ time }} <small>({{ date }})</small></p>
+		<div>
+			<p class="row time display-1 px-2 withBackground">
+				{{ time }}
+			</p>
+		</div>
+		<div class="row mt-2">
+			<p class="h4 px-2 py-1 withBackground">
+				{{ date }}
+			</p>
 		</div>
 	</div>
 </template>
@@ -12,9 +19,10 @@ import moment from 'moment'
 export default {
 	data: function() {
 		return {
-			time: moment().format(process.env.TIME_FORMAT),
-			date: moment().format(process.env.DATE_FORMAT),
-			moment: moment
+			time: moment().format(this.$store.state.infoboardSettings.TIME_FORMAT),
+			date: moment().format(this.$store.state.infoboardSettings.DATE_FORMAT),
+			moment: moment,
+			localSettings: this.$store.state.infoboardSettings
 		}
 	},
 	mounted() {
@@ -25,13 +33,17 @@ export default {
 	},
 	methods: {
 		updateTime () {
-			this.time = moment().format(process.env.TIME_FORMAT)
-			this.date = moment().format(process.env.DATE_FORMAT)
+			// this.time = moment().format(this.localSettings.TIME_FORMAT)
+			// this.date = moment().format(this.localSettings.DATE_FORMAT)
 		}
 	}
 }
 </script>
 
 <style scoped>
-
+@media (max-width: 575.98px) {
+	.time {
+		font-size: 4rem;
+	}
+}
 </style>
