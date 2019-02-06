@@ -8,11 +8,16 @@
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
-    "start": "nuxt build && nuxt start",
+    "start": "nuxt start",
+    "bstart": "nuxt build && nuxt start",
     "precommit": "npm run lint",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore ."
   },
   "dependencies": {
+    "@fortawesome/fontawesome-pro": "^5.7.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.13",
+    "@fortawesome/free-solid-svg-icons": "^5.7.0",
+    "@fortawesome/vue-fontawesome": "^0.1.5",
     "@nuxtjs/dotenv": "^1.1.1",
     "axios": "^0.16.2",
     "bootstrap": "^4.1.1",
@@ -21,12 +26,15 @@
     "express": "^4.15.3",
     "glob": "^7.1.2",
     "googleapis": "^27.0.0",
+    "i": "^0.3.6",
     "jquery": "^3.3.1",
     "moment": "^2.22.2",
-    "nuxt-edge": "latest",
-    "popper.js": "^1.14.3",
+    "npm": "^6.7.0",
+    "nuxt": "latest",
+    "popper.js": "^1.14.7",
     "source-map-support": "^0.4.15",
-    "unsplash-js": "^4.8.0"
+    "unsplash-js": "^4.8.0",
+    "vue-carousel": "^0.17.0"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
@@ -35,12 +43,12 @@
     "eslint-config-standard": "^10.2.1",
     "eslint-loader": "^1.9.0",
     "eslint-plugin-html": "^3.1.1",
-    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-node": "^5.1.1",
     "eslint-plugin-prettier": "^2.6.2",
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
     "eslint-plugin-vue": "^4.7.1",
-    "prettier": "^1.14.3"
+    "prettier": "^1.16.2"
   }
 }

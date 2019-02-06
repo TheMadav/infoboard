@@ -12,7 +12,8 @@ function findNextDir (startPath, lastDir) {
 	let dirList = fs.readdirSync(startPath)
 	let ignoreDirs = []
 	let normalizedMainDir = path.normalize(mainDir)
-
+	//console.log("Start path:"+startPath)
+	//console.log("Last dir"+lastDir)
 	// if last dir is provided and exists in the list exclude all directiries up to this one from glob
 	if (lastDir !== '') {
 		for (let dirToIgnore of dirList) {
@@ -29,10 +30,11 @@ function findNextDir (startPath, lastDir) {
 			dirList = dirListFiltered
 		}
 	}
-
-	for (let dir of dirList) {
-		let fullPath = path.join(startPath, dir)
-		if (fs.statSync(fullPath).isDirectory()) {
+	//console.log("dirList"+dirList)
+	//for (let dir of dirList) {
+		let fullPath = path.join(startPath, lastDir)
+	//	console.log(fullPath)
+		if (fs.statSync(mainDir).isDirectory()) {
 			files = glob.sync('**/*.+(jpg|jpeg)', {
 				cwd: fullPath,
 				nocase: true,
@@ -47,7 +49,7 @@ function findNextDir (startPath, lastDir) {
 			// return that one file
 			return [dir]
 		}
-	}
+	//}
 }
 
 router.get('/backgrounds/*', (req, res) => {
@@ -58,6 +60,7 @@ router.get('/backgrounds/*', (req, res) => {
 	lastPath = decodeURIComponent(reqPath.replace('/backgrounds/', ''))
 	lastPath = lastPath.substring(0, lastPath.indexOf('/'))
 	files = findNextDir(mainDir, lastPath)
+	//console.log(files)
 	res.json(files)
 })
 

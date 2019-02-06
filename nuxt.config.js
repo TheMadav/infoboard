@@ -1,6 +1,6 @@
 const webpack = require('webpack')
 
-module.exports = {
+export default {
   /*
   ** Headers of the page
   */
@@ -44,6 +44,14 @@ module.exports = {
     /*
     ** Run ESLINT on save
     */
+    uglify: {
+        uglifyOptions: {
+            compress: false
+        },
+    },
+    optimization: {
+        minimize: false
+    },
     extend (config, { isDev }) {
       if (isDev && process.client) {
         config.module.rules.push({
@@ -60,7 +68,11 @@ module.exports = {
     // '~/assets/css/main.css'
   ],
   // include bootstrap js on startup
-  plugins: ['~plugins/bootstrap.js'],
+  plugins: [
+        '~plugins/bootstrap.js',
+        { src: '~/plugins/vue-carousel.js', ssr: false },
+        { src: '~/plugins/fontawesome.js', ssr: false }
+        ],
   serverMiddleware: [
     // API middleware
     '~/api/index.js'
