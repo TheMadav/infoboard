@@ -33,8 +33,8 @@ export default {
 	},
 	methods: {
 		updateTime () {
-			// this.time = moment().format(this.localSettings.TIME_FORMAT)
-			// this.date = moment().format(this.localSettings.DATE_FORMAT)
+			this.time = moment().format(this.localSettings.TIME_FORMAT)
+			this.date = moment().format(this.localSettings.DATE_FORMAT)
 		}
 	}
 }

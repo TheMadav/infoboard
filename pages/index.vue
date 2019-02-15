@@ -40,7 +40,7 @@ export default {
 		let settings
 		try {
 			settings = localStorage.getItem('infoboardSettings')
-			if (settings === null) {
+			if (settings == null) {
 				settings = JSON.stringify(process.env.envsettings)
 				localStorage.removeItem('infoboardSettings')
 				localStorage.setItem('infoboardSettings', settings)

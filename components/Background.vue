@@ -99,7 +99,7 @@ export default {
 					this.settings = JSON.parse(settings)
 				}
 			} catch (err) {
-				if (process.env.NODE_ENV == 'development') console.log(e)
+				if (process.env.NODE_ENV == 'development') console.log(err)
 			}
 		},
 		saveState () {
@@ -110,7 +110,7 @@ export default {
 				localStorage.removeItem('infoboardBgrState')
 				localStorage.setItem('infoboardBgrState', savedImageList)
 			} catch (err) {
-				if (process.env.NODE_ENV == 'development') console.log(e)
+				if (process.env.NODE_ENV == 'development') console.log(err)
 			}
 		},
 		loadState () {
@@ -128,7 +128,7 @@ export default {
 					}
 				}
 			} catch (err) {
-				if (process.env.NODE_ENV == 'development') console.log(e)
+				if (process.env.NODE_ENV == 'development') console.log(err)
 			}
 		},
 		fullscreen: function () {
