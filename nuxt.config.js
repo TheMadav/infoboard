@@ -36,7 +36,8 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-	  	 { src: '~/plugins/fontawesome.js', ssr: false }
+	  	{ src: '~/plugins/vue-carousel.js', ssr: false },
+	  	{ src: '~/plugins/fontawesome.js', ssr: false }
 	  ],
 
 	/*

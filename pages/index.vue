@@ -8,7 +8,15 @@
 		</div>
 
 		<div id ="footer" class="container-fluid px-4 mb-0 fixed-bottom withBackground">
-			<OpenWeather />
+			<carousel :autoplay="true" :autoplayTimeout="5000" :navigationEnabled="false" :paginationEnabled="false" :perPage="1" :loop="true">
+			    <slide>
+			     	<OpenWeather />
+			    </slide>
+				<slide>
+			    	<Rmv />
+				</slide>
+			  </carousel>
+
 		</div>
 	</div>
 
@@ -22,6 +30,7 @@ import OpenWeather from '~/components/OpenWeather.vue'
 import Forecast from '~/components/Forecast.vue'
 import Calendar from '~/components/Calendar.vue'
 import Tfl from '~/components/Tfl.vue'
+import Rmv from '~/components/Rmv.vue'
 
 export default {
 	components: {
@@ -31,7 +40,8 @@ export default {
 		OpenWeather,
 		Forecast,
 		Calendar,
-		Tfl
+		Tfl,
+		Rmv
 	}
 }
 </script>
