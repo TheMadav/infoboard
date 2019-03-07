@@ -1,10 +1,10 @@
 <template>
 	<section class="container">
 		<div
-			id="backgroundImageBlur" 
+			id="backgroundImageBlur"
 			:style="background" />
-		<div 
-			id="backgroundImage" 
+		<div
+			id="backgroundImage"
 			:style="background" />
 
 		<div class="btn-group buttons">
@@ -12,7 +12,7 @@
 				v-if="fullscreenEnabled === true"
 				class="btn btn-sm btn-outline-dark"
 				@click="fullscreen">
-				fullscreen
+				 <font-awesome-icon icon="desktop" />
 			</button>
 			<button
 				v-if="showNavButtons === true"
@@ -21,7 +21,7 @@
 				@click="getNext('image')">
 				{{ nextimage }}
 			</button>
-			<button 
+			<button
 				v-if="enableFolderButton === true && showNavButtons === true"
 				:disabled="disableButtons"
 				class="btn btn-sm btn-outline-dark"
@@ -36,6 +36,7 @@
 import axios from 'axios'
 import EXIF from 'exif-js'
 import Unsplash, { toJson } from 'unsplash-js'
+import Vue from 'vue'
 
 export default {
 	data: function() {
@@ -347,7 +348,7 @@ export default {
 }
 .buttons {
 	position: fixed;
-	bottom: 0.5rem;
+	top: 0.5rem;
 	right: 0.5rem;
 	z-index: 10;
 }
