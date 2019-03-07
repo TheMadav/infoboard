@@ -1,11 +1,7 @@
 <template>
-	<div
-		v-if="enableWeather === 'true'"
-		class="col mx-3">
-		<div class="row">
-			<div
-				v-if="weather.main"
-				class="col-sm-4 weather pr-0">
+	<div v-if="enableWeather === 'true'" class="row">
+		<div v-if="weather.main"
+			class="col-sm-4 weather pr-0 ">
 				<div class="media px-2">
 					<img
 						id="weather-icon"
@@ -23,10 +19,10 @@
 						</p>-->
 						<p class="display-4">{{ roundValue(weather.main.temp) }}&deg;{{ units }}</p>
 						<p>{{ weather.weather[0].description }}</p>
-						<small><a
+						<!--<small><a
 								href="https://openweathermap.org/"
 							target="_blank">Powered by openweathermap.org</a></small>
-						<small>Updated on: {{ updated }}</small>
+						<small>Updated on: {{ updated }}</small>-->
 					</div>
 				</div>
 			</div>
@@ -120,7 +116,7 @@ export default {
 	text-align: center;
 }
 .forecastIcon img {
-	width: 50%;
+	width: 100%;
 }
 @media (max-width: 575.98px) {
 	#weather-icon {
