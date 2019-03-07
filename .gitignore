@@ -89,3 +89,7 @@ credentials.json
 token.json
 .editorconfig
 static/backgrounds
+<<<<<<< HEAD
+=======
+package-lock.json
+>>>>>>> madav-master

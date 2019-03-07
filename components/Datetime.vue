@@ -19,10 +19,9 @@ import moment from 'moment'
 export default {
 	data: function() {
 		return {
-			time: moment().format(this.$store.state.infoboardSettings.TIME_FORMAT),
-			date: moment().format(this.$store.state.infoboardSettings.DATE_FORMAT),
-			moment: moment,
-			localSettings: this.$store.state.infoboardSettings
+			time: moment().format(process.env.TIME_FORMAT),
+			date: moment().format(process.env.DATE_FORMAT),
+			moment: moment
 		}
 	},
 	mounted() {
@@ -33,8 +32,8 @@ export default {
 	},
 	methods: {
 		updateTime () {
-			// this.time = moment().format(this.localSettings.TIME_FORMAT)
-			// this.date = moment().format(this.localSettings.DATE_FORMAT)
+			this.time = moment().format(process.env.TIME_FORMAT)
+			this.date = moment().format(process.env.DATE_FORMAT)
 		}
 	}
 }

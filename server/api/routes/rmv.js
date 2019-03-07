@@ -3,15 +3,9 @@ const router = Router()
 const https = require('https')
 require('dotenv').config()
 
-router.get('/openweather', (requ, resp) => {
-	let location = process.env.WEATHER_LOCATION
-	let	apiKey 	= process.env.WEATHER_API_SECRET
-<<<<<<< HEAD
-	let units = process.env.WEATHER_UNITS === 'metric' ? 'us' : 'si'
-=======
-	let units = process.env.WEATHER_UNITS === 'fahrenheit' ? 'us' : 'metric'
->>>>>>> madav-master
-	https.get(`https://api.openweathermap.org/data/2.5/forecast?id=${location}&APPID=${apiKey}&units=metric`, (res) => {
+router.get('/rmv', (req, resp) => {
+	let apiKey = process.env.RMV_API_KEY
+	https.get(`https://www.rmv.de/hapi/departureBoard?accessId=${apiKey}&id=${req.query.station}&direction=${req.query.direction}&format=json`, (res) => {
 		const { statusCode } = res
 		const contentType = res.headers['content-type']
 

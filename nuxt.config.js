@@ -1,10 +1,6 @@
 const pkg = require('./package')
-const envconfig = require('dotenv').config()
 
 module.exports = {
-	env: {
-		envsettings: envconfig.parsed
-	},
 	mode: 'universal',
 
 	/*
@@ -32,13 +28,17 @@ module.exports = {
   ** Global CSS
   */
 	css: [
-	],
+    'bootstrap/dist/css/bootstrap.css'
+    // '~/assets/css/main.css'
+  ],
 
 	/*
   ** Plugins to load before mounting the App
   */
-	plugins: [
-	],
+  plugins: [
+	  	{ src: '~/plugins/vue-carousel.js', ssr: false },
+	  	{ src: '~/plugins/fontawesome.js', ssr: false }
+	  ],
 
 	/*
   ** Nuxt.js modules
@@ -70,7 +70,7 @@ module.exports = {
 				config.module.rules.push({
 					enforce: 'pre',
 					test: /\.(js|vue)$/,
-					loader: 'eslint-loader',
+					//loader: 'eslint-loader',
 					exclude: /(node_modules)/
 				})
 			}
