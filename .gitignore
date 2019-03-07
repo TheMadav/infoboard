@@ -89,3 +89,4 @@ credentials.json
 token.json
 .editorconfig
 static/backgrounds
+package-lock.json

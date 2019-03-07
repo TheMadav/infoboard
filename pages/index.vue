@@ -1,21 +1,15 @@
 <template>
-	<div class="container-fluid pt-2">
-		<Background />
+	<div class="container-fluid px-4">
+		<Background/>
 		<div class="row mx-2 py-2">
-			<Datetime />
-			<Weather />
-		</div>
-		<Forecast />
+			<Datetime/>
 
-		<div class="row py-2">
-			<Tfl />
-			<Calendar />
 		</div>
-		<n-link
-			class="btn btn-sm btn-outline-dark btn-settings"
-			to="/settings">
-			Settings
-		</n-link>
+
+		<div class="row pb-2 m-0 fixed-bottom footer withBackground">
+			<OpenWeather />
+		</div>
+
 	</div>
 </template>
 
@@ -23,6 +17,7 @@
 import Background from '~/components/Background.vue'
 import Datetime from '~/components/Datetime.vue'
 import Weather from '~/components/Weather.vue'
+import OpenWeather from '~/components/OpenWeather.vue'
 import Forecast from '~/components/Forecast.vue'
 import Calendar from '~/components/Calendar.vue'
 import Tfl from '~/components/Tfl.vue'
@@ -32,25 +27,10 @@ export default {
 		Background,
 		Datetime,
 		Weather,
+		OpenWeather,
 		Forecast,
 		Calendar,
 		Tfl
-	},
-	created() {
-		let settings
-		try {
-			settings = localStorage.getItem('infoboardSettings')
-			if (settings == null) {
-				settings = JSON.stringify(process.env.envsettings)
-				localStorage.removeItem('infoboardSettings')
-				localStorage.setItem('infoboardSettings', settings)
-				this.$router.replace({ path: 'settings' })
-			} else {
-				this.$store.commit('updateSettings', JSON.parse(settings))
-			}
-		} catch (err) {
-			if (process.env.NODE_ENV == 'development') console.log(err)
-		}
 	}
 }
 </script>
@@ -67,6 +47,9 @@ html, body {
 	-ms-user-select: none; /* IE10+/Edge */
 	user-select: none; /* Standard */
 }
+.footer{
+		width:100%;
+	}
 
 .withBackground {
 	background-color: #333333;
@@ -75,12 +58,7 @@ html, body {
 	width: fit-content;
 }
 
-.btn-settings {
-	position: fixed;
-	bottom: 0.5rem;
-	left: 0.5rem;
-	z-index: 10;
-}
+
 @media (max-width: 575.98px) {
 	html, body {
 		font-size: 0.9rem;
